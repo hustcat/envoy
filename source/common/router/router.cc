@@ -491,7 +491,7 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
 
   transport_socket_options_ = Network::TransportSocketOptionsUtility::fromFilterState(
       *callbacks_->streamInfo().filterState());
-  std::unique_ptr<GenericConnPool> generic_conn_pool = createConnPool(*cluster);
+  std::unique_ptr<GenericConnPool> generic_conn_pool = createConnPool(*cluster);  //// ConnPool
 
   if (!generic_conn_pool) {
     sendNoHealthyUpstreamResponse();
@@ -585,8 +585,8 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
   modify_headers_ = modify_headers;
 
   UpstreamRequestPtr upstream_request =
-      std::make_unique<UpstreamRequest>(*this, std::move(generic_conn_pool));
-  LinkedList::moveIntoList(std::move(upstream_request), upstream_requests_);
+      std::make_unique<UpstreamRequest>(*this, std::move(generic_conn_pool)); /// UpstreamRequest::UpstreamRequest()
+  LinkedList::moveIntoList(std::move(upstream_request), upstream_requests_); /// UpstreamRequest::encodeHeaders()
   upstream_requests_.front()->encodeHeaders(end_stream);
   if (end_stream) {
     onRequestComplete();
@@ -609,7 +609,7 @@ Filter::createConnPool(Upstream::ThreadLocalCluster& thread_local_cluster) {
       route_entry_->connectConfig().has_value() &&
       downstream_headers_->getMethodValue() == Http::Headers::get().MethodValues.Connect;
   return factory->createGenericConnPool(thread_local_cluster, should_tcp_proxy, *route_entry_,
-                                        callbacks_->streamInfo().protocol(), this);
+                                        callbacks_->streamInfo().protocol(), this); /// Extensions::Upstreams::Http::Generic::GenericGenericConnPoolFactory::createGenericConnPool
 }
 
 void Filter::sendNoHealthyUpstreamResponse() {

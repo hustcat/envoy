@@ -96,7 +96,7 @@ public:
     // The static cast makes sure we call the base class host() and not
     // HttpConnPoolImplBase::host which is of a different type.
     Upstream::Host::CreateConnectionData data =
-        static_cast<Envoy::ConnectionPool::ConnPoolImplBase*>(&parent)->host()->createConnection(
+        static_cast<Envoy::ConnectionPool::ConnPoolImplBase*>(&parent)->host()->createConnection(  /// createConnection()
             parent.dispatcher(), parent.socketOptions(), parent.transportSocketOptions());
     initialize(data, parent);
   }
@@ -151,14 +151,14 @@ public:
                         CreateCodecFn codec_fn, std::vector<Http::Protocol> protocol)
       : HttpConnPoolImplBase(host, priority, dispatcher, options, transport_socket_options,
                              random_generator, state, protocol),
-        codec_fn_(codec_fn), client_fn_(client_fn) {}
+        codec_fn_(codec_fn), client_fn_(client_fn) {} /// ref to Envoy::Http::Http1::allocateConnPool()
 
   CodecClientPtr createCodecClient(Upstream::Host::CreateConnectionData& data) override {
     return codec_fn_(data, this);
   }
 
   Envoy::ConnectionPool::ActiveClientPtr instantiateActiveClient() override {
-    return client_fn_(this);
+    return client_fn_(this); /// (HttpConnPoolImplBase* pool) { return std::make_unique<ActiveClient>(*pool); }
   }
 
 protected:

@@ -308,7 +308,7 @@ Network::FilterStatus ConnectionManagerImpl::onData(Buffer::Instance& data, bool
   do {
     redispatch = false;
 
-    const Status status = codec_->dispatch(data);
+    const Status status = codec_->dispatch(data); /// ServerConnection::dispatch()
 
     if (isBufferFloodError(status) || isInboundFramesWithEmptyPayloadError(status)) {
       handleCodecError(status.message());
@@ -1069,7 +1069,7 @@ void ConnectionManagerImpl::ActiveStream::decodeHeaders(RequestHeaderMapPtr&& he
     traceRequest();
   }
 
-  filter_manager_.decodeHeaders(*request_headers_, end_stream);
+  filter_manager_.decodeHeaders(*request_headers_, end_stream); /// FilterManager::decodeHeaders
 
   // Reset it here for both global and overridden cases.
   resetIdleTimer();

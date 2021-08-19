@@ -197,7 +197,7 @@ void UpstreamRequest::encodeHeaders(bool end_stream) {
   ASSERT(!encode_complete_);
   encode_complete_ = end_stream;
 
-  conn_pool_->newStream(this);
+  conn_pool_->newStream(this); /// Upstreams::Http::Http::HttpConnPool::newStream()
 }
 
 void UpstreamRequest::encodeData(Buffer::Instance& data, bool end_stream) {

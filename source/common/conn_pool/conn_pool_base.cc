@@ -104,7 +104,7 @@ bool ConnPoolImplBase::tryCreateNewConnection(float global_preconnect_ratio) {
   if (can_create_connection ||
       (ready_clients_.empty() && busy_clients_.empty() && connecting_clients_.empty())) {
     ENVOY_LOG(debug, "creating a new connection");
-    ActiveClientPtr client = instantiateActiveClient();
+    ActiveClientPtr client = instantiateActiveClient(); ///Envoy::Http::FixedHttpConnPoolImpl::instantiateActiveClient(), Envoy::Http::Http1::ActiveClient
     ASSERT(client->state_ == ActiveClient::State::CONNECTING);
     ASSERT(std::numeric_limits<uint64_t>::max() - connecting_stream_capacity_ >=
            client->effectiveConcurrentStreamLimit());
@@ -196,7 +196,7 @@ ConnectionPool::Cancellable* ConnPoolImplBase::newStream(AttachContext& context)
   }
 
   if (host_->cluster().resourceManager(priority_).pendingRequests().canCreate()) {
-    ConnectionPool::Cancellable* pending = newPendingStream(context);
+    ConnectionPool::Cancellable* pending = newPendingStream(context); /// HttpConnPoolImplBase::newPendingStream
     // This must come after newPendingStream() because this function uses the
     // length of pending_streams_ to determine if a new connection is needed.
     tryCreateNewConnections();

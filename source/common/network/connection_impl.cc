@@ -609,7 +609,7 @@ void ConnectionImpl::onReadReady() {
   // reading from the transport if the read buffer is above high watermark at the start of the
   // method.
   transport_wants_read_ = false;
-  IoResult result = transport_socket_->doRead(*read_buffer_);
+  IoResult result = transport_socket_->doRead(*read_buffer_);  //// read data
   uint64_t new_buffer_size = read_buffer_->length();
   updateReadBufferStats(result.bytes_processed_, new_buffer_size);
 

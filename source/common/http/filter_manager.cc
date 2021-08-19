@@ -484,7 +484,7 @@ void FilterManager::decodeHeaders(ActiveStreamDecoderFilter* filter, RequestHead
     ASSERT(!(state_.filter_call_state_ & FilterCallState::DecodeHeaders));
     state_.filter_call_state_ |= FilterCallState::DecodeHeaders;
     (*entry)->end_stream_ = (end_stream && continue_data_entry == decoder_filters_.end());
-    FilterHeadersStatus status = (*entry)->decodeHeaders(headers, (*entry)->end_stream_);
+    FilterHeadersStatus status = (*entry)->decodeHeaders(headers, (*entry)->end_stream_); //// Filter::decodeHeaders
 
     ASSERT(!(status == FilterHeadersStatus::ContinueAndDontEndStream && !(*entry)->end_stream_),
            "Filters should not return FilterHeadersStatus::ContinueAndDontEndStream from "

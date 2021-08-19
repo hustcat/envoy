@@ -329,7 +329,7 @@ void InstanceImpl::initialize(const Options& options,
 
   // Handle configuration that needs to take place prior to the main configuration load.
   InstanceUtil::loadBootstrapConfig(bootstrap_, options,
-                                    messageValidationContext().staticValidationVisitor(), *api_);
+                                    messageValidationContext().staticValidationVisitor(), *api_); //// config file
   bootstrap_config_update_time_ = time_source_.systemTime();
 
   // Immediate after the bootstrap has been loaded, override the header prefix, if configured to
@@ -410,7 +410,7 @@ void InstanceImpl::initialize(const Options& options,
 
   // Learn original_start_time_ if our parent is still around to inform us of it.
   restarter_.sendParentAdminShutdownRequest(original_start_time_);
-  admin_ = std::make_unique<AdminImpl>(initial_config.admin().profilePath(), *this);
+  admin_ = std::make_unique<AdminImpl>(initial_config.admin().profilePath(), *this); /// admin API
 
   loadServerFlags(initial_config.flagsPath());
 
@@ -465,7 +465,7 @@ void InstanceImpl::initialize(const Options& options,
 
   // Workers get created first so they register for thread local updates.
   listener_manager_ = std::make_unique<ListenerManagerImpl>(
-      *this, listener_component_factory_, worker_factory_, bootstrap_.enable_dispatcher_stats());
+      *this, listener_component_factory_, worker_factory_, bootstrap_.enable_dispatcher_stats());  /// Worker initialize
 
   // The main thread is also registered for thread local updates so that code that does not care
   // whether it runs on the main thread or on workers can still use TLS.
@@ -524,7 +524,7 @@ void InstanceImpl::initialize(const Options& options,
   const bool use_tcp_for_dns_lookups = bootstrap_.use_tcp_for_dns_lookups();
   dns_resolver_ = dispatcher_->createDnsResolver({}, use_tcp_for_dns_lookups);
 
-  cluster_manager_factory_ = std::make_unique<Upstream::ProdClusterManagerFactory>(
+  cluster_manager_factory_ = std::make_unique<Upstream::ProdClusterManagerFactory>(    /// Cluster Discover Sevice initialize
       *admin_, Runtime::LoaderSingleton::get(), stats_store_, thread_local_, dns_resolver_,
       *ssl_context_manager_, *dispatcher_, *local_info_, *secret_manager_,
       messageValidationContext(), *api_, http_context_, grpc_context_, router_context_,

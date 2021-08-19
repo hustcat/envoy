@@ -627,7 +627,7 @@ Http::Status ConnectionImpl::innerDispatch(Buffer::Instance& data) {
 
 Envoy::StatusOr<size_t> ConnectionImpl::dispatchSlice(const char* slice, size_t len) {
   ASSERT(codec_status_.ok() && dispatching_);
-  ssize_t rc = http_parser_execute(&parser_, &settings_, slice, len);
+  ssize_t rc = http_parser_execute(&parser_, &settings_, slice, len); /// http_parser_settings ConnectionImpl::settings_
   if (!codec_status_.ok()) {
     return codec_status_;
   }
@@ -781,7 +781,7 @@ Envoy::StatusOr<int> ConnectionImpl::onHeadersCompleteBase() {
     }
   }
 
-  auto statusor = onHeadersComplete();
+  auto statusor = onHeadersComplete(); /// ServerConnectionImpl::onHeadersComplete()
   if (!statusor.ok()) {
     RETURN_IF_ERROR(statusor.status());
   }
@@ -991,7 +991,7 @@ Envoy::StatusOr<int> ServerConnectionImpl::onHeadersComplete() {
     // encoding because end stream with zero body length has not yet been indicated.
     if (parser_.flags & F_CHUNKED ||
         (parser_.content_length > 0 && parser_.content_length != ULLONG_MAX) || handling_upgrade_) {
-      active_request.request_decoder_->decodeHeaders(std::move(headers), false);
+      active_request.request_decoder_->decodeHeaders(std::move(headers), false); /// ConnectionManagerImpl::ActiveStream::decodeHeaders
 
       // If the connection has been closed (or is closing) after decoding headers, pause the parser
       // so we return control to the caller.

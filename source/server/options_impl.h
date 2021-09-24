@@ -172,7 +172,7 @@ private:
   bool use_dynamic_base_id_;
   std::string base_id_path_;
   uint32_t concurrency_;
-  std::string config_path_;
+  std::string config_path_; /// /etc/istio/proxy/envoy-rev0.json
   envoy::config::bootstrap::v3::Bootstrap config_proto_;
   absl::optional<uint32_t> bootstrap_version_;
   std::string config_yaml_;

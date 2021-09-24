@@ -44,7 +44,7 @@ void WorkerImpl::addListener(absl::optional<uint64_t> overridden_listener,
   // want to surface this.
   dispatcher_->post([this, overridden_listener, &listener, completion]() -> void {
     try {
-      handler_->addListener(overridden_listener, listener);
+      handler_->addListener(overridden_listener, listener); /// ConnectionHandlerImpl::addListener()
       hooks_.onWorkerListenerAdded();
       completion(true);
     } catch (const Network::CreateListenerException& e) {
@@ -131,7 +131,7 @@ void WorkerImpl::threadRoutine(GuardDog& guard_dog) {
     watch_dog_ = guard_dog.createWatchDog(api_.threadFactory().currentThreadId(),
                                           dispatcher_->name(), *dispatcher_);
   });
-  dispatcher_->run(Event::Dispatcher::RunType::Block);
+  dispatcher_->run(Event::Dispatcher::RunType::Block); ///DispatcherImpl::run()
   ENVOY_LOG(debug, "worker exited dispatch loop");
   guard_dog.stopWatching(watch_dog_);
 

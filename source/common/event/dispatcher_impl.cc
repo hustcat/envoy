@@ -115,7 +115,7 @@ DispatcherImpl::createServerConnection(Network::ConnectionSocketPtr&& socket,
                                        Network::TransportSocketPtr&& transport_socket,
                                        StreamInfo::StreamInfo& stream_info) {
   ASSERT(isThreadSafe());
-  return std::make_unique<Network::ServerConnectionImpl>(
+  return std::make_unique<Network::ServerConnectionImpl>( /// ServerConnectionImpl::ServerConnectionImpl()
       *this, std::move(socket), std::move(transport_socket), stream_info, true);
 }
 

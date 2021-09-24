@@ -89,13 +89,13 @@ void TcpListenerImpl::onSocketEvent(short flags) {
                                            local_address->ip()->version() ==
                                                Address::IpVersion::v6);
 
-    cb_.onAccept(
+    cb_.onAccept( /// ConnectionHandlerImpl::ActiveTcpListener::onAccept()
         std::make_unique<AcceptedSocketImpl>(std::move(io_handle), local_address, remote_address));
   }
 }
 
 void TcpListenerImpl::setupServerSocket(Event::DispatcherImpl& dispatcher, Socket& socket) {
-  socket.ioHandle().listen(backlog_size_);
+  socket.ioHandle().listen(backlog_size_);/// listen
 
   // Although onSocketEvent drains to completion, use level triggered mode to avoid potential
   // loss of the trigger due to transient accept errors.
@@ -114,7 +114,7 @@ TcpListenerImpl::TcpListenerImpl(Event::DispatcherImpl& dispatcher, Random::Rand
                                  SocketSharedPtr socket, TcpListenerCallbacks& cb,
                                  bool bind_to_port, uint32_t backlog_size)
     : BaseListenerImpl(dispatcher, std::move(socket)), cb_(cb), backlog_size_(backlog_size),
-      random_(random), reject_fraction_(0.0) {
+      random_(random), reject_fraction_(0.0) { /// cb = ConnectionHandlerImpl::ActiveTcpListener::ActiveTcpListener
   if (bind_to_port) {
     setupServerSocket(dispatcher, *socket_);
   }

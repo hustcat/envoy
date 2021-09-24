@@ -63,7 +63,7 @@ public:
    * Add a connection callback to the underlying network connection.
    */
   void addConnectionCallbacks(Network::ConnectionCallbacks& cb) {
-    connection_->addConnectionCallbacks(cb);
+    connection_->addConnectionCallbacks(cb); /// Network:: ConnectionImplBase::addConnectionCallbacks()
   }
 
   /**
@@ -168,8 +168,8 @@ protected:
   // The order of host_, connection_, and codec_ matter as during destruction each can refer to
   // the previous, at least in tests.
   Upstream::HostDescriptionConstSharedPtr host_;
-  Network::ClientConnectionPtr connection_;
-  ClientConnectionPtr codec_;
+  Network::ClientConnectionPtr connection_; //// Network::ClientConnectionImpl
+  ClientConnectionPtr codec_; /// Http1::ClientConnectionImpl
   Event::TimerPtr idle_timer_;
   const absl::optional<std::chrono::milliseconds> idle_timeout_;
 
@@ -251,7 +251,7 @@ private:
   CodecClientCallbacks* codec_client_callbacks_{};
   bool connected_{};
   bool remote_closed_{};
-};
+}; /// end class CodecClient
 
 using CodecClientPtr = std::unique_ptr<CodecClient>;
 

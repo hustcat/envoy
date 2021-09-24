@@ -308,7 +308,7 @@ Network::FilterStatus ConnectionManagerImpl::onData(Buffer::Instance& data, bool
   do {
     redispatch = false;
 
-    const Status status = codec_->dispatch(data); /// ServerConnection::dispatch()
+    const Status status = codec_->dispatch(data); /// ServerConnectionImpl::dispatch()
 
     if (isBufferFloodError(status) || isInboundFramesWithEmptyPayloadError(status)) {
       handleCodecError(status.message());
@@ -1138,7 +1138,7 @@ void ConnectionManagerImpl::ActiveStream::decodeData(Buffer::Instance& data, boo
   filter_manager_.maybeEndDecode(end_stream);
   filter_manager_.streamInfo().addBytesReceived(data.length());
 
-  filter_manager_.decodeData(data, end_stream);
+  filter_manager_.decodeData(data, end_stream); /// Http::FilterManager::decodeData()
 }
 
 void ConnectionManagerImpl::ActiveStream::decodeTrailers(RequestTrailerMapPtr&& trailers) {

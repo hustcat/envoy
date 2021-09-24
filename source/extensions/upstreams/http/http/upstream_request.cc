@@ -61,7 +61,7 @@ void HttpConnPool::onPoolReady(Envoy::Http::RequestEncoder& request_encoder,
   conn_pool_stream_handle_ = nullptr;
   auto upstream =
       std::make_unique<HttpUpstream>(callbacks_->upstreamToDownstream(), &request_encoder);
-  callbacks_->onPoolReady(std::move(upstream), host,
+  callbacks_->onPoolReady(std::move(upstream), host, /// UpstreamRequest::onPoolReady
                           request_encoder.getStream().connectionLocalAddress(), info, protocol);
 }
 

@@ -283,7 +283,7 @@ void InstanceUtil::loadBootstrapConfig(envoy::config::bootstrap::v3::Bootstrap& 
                                        const Options& options,
                                        ProtobufMessage::ValidationVisitor& validation_visitor,
                                        Api::Api& api) {
-  const std::string& config_path = options.configPath();
+  const std::string& config_path = options.configPath(); /// /etc/istio/proxy/envoy-rev0.json
   const std::string& config_yaml = options.configYaml();
   const envoy::config::bootstrap::v3::Bootstrap& config_proto = options.configProto();
 
@@ -534,7 +534,7 @@ void InstanceImpl::initialize(const Options& options,
   // thread local data per above. See MainImpl::initialize() for why ConfigImpl
   // is constructed as part of the InstanceImpl and then populated once
   // cluster_manager_factory_ is available.
-  config_.initialize(bootstrap_, *this, *cluster_manager_factory_);
+  config_.initialize(bootstrap_, *this, *cluster_manager_factory_); /// MainImpl::initialize()
 
   // Instruct the listener manager to create the LDS provider if needed. This must be done later
   // because various items do not yet exist when the listener manager is created.
@@ -547,7 +547,7 @@ void InstanceImpl::initialize(const Options& options,
               bootstrap_.dynamic_resources().lds_resources_locator()));
     }
     listener_manager_->createLdsApi(bootstrap_.dynamic_resources().lds_config(),
-                                    lds_resources_locator.get());
+                                    lds_resources_locator.get()); /// ListenerManagerImpl::createLdsApi()
   }
 
   // We have to defer RTDS initialization until after the cluster manager is
@@ -612,7 +612,7 @@ void InstanceImpl::onRuntimeReady() {
 
 void InstanceImpl::startWorkers() {
   // The callback will be called after workers are started.
-  listener_manager_->startWorkers(*worker_guard_dog_, [this]() {
+  listener_manager_->startWorkers(*worker_guard_dog_, [this]() { /// ListenerManagerImpl::startWorkers()
     if (isShutdown()) {
       return;
     }
@@ -724,7 +724,7 @@ void InstanceImpl::run() {
   const auto run_helper = RunHelper(*this, options_, *dispatcher_, clusterManager(),
                                     access_log_manager_, init_manager_, overloadManager(), [this] {
                                       notifyCallbacksForStage(Stage::PostInit);
-                                      startWorkers();
+                                      startWorkers(); /// InstanceImpl::startWorkers()
                                     });
 
   // Run the main dispatch loop waiting to exit.
@@ -732,7 +732,7 @@ void InstanceImpl::run() {
   auto watchdog = main_thread_guard_dog_->createWatchDog(api_->threadFactory().currentThreadId(),
                                                          "main_thread", *dispatcher_);
   dispatcher_->post([this] { notifyCallbacksForStage(Stage::Startup); });
-  dispatcher_->run(Event::Dispatcher::RunType::Block);
+  dispatcher_->run(Event::Dispatcher::RunType::Block); /// DispatcherImpl::run()
   ENVOY_LOG(info, "main dispatch loop exited");
   main_thread_guard_dog_->stopWatching(watchdog);
   watchdog.reset();

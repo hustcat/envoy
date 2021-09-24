@@ -348,7 +348,7 @@ private:
 
     // Note: The FM must outlive the above headers, as they are possibly accessed during filter
     // destruction.
-    FilterManager filter_manager_;
+    FilterManager filter_manager_; ///
 
     Router::ConfigConstSharedPtr snapped_route_config_;
     Router::ScopedConfigConstSharedPtr snapped_scoped_routes_config_;
@@ -377,7 +377,7 @@ private:
     std::unique_ptr<Tracing::CustomTagMap> tracing_custom_tags_{nullptr};
 
     friend FilterManager;
-  };
+  }; /// end ActiveStream
 
   using ActiveStreamPtr = std::unique_ptr<ActiveStream>;
 
@@ -415,8 +415,8 @@ private:
   ConnectionManagerConfig& config_;
   ConnectionManagerStats& stats_; // We store a reference here to avoid an extra stats() call on
                                   // the config in the hot path.
-  ServerConnectionPtr codec_;
-  std::list<ActiveStreamPtr> streams_;
+  ServerConnectionPtr codec_; ////
+  std::list<ActiveStreamPtr> streams_; ////
   Stats::TimespanPtr conn_length_;
   const Network::DrainDecision& drain_close_;
   DrainState drain_state_{DrainState::NotDraining};

@@ -127,10 +127,10 @@ private:
   }
 
   RouterFilterInterface& parent_;
-  std::unique_ptr<GenericConnPool> conn_pool_;
+  std::unique_ptr<GenericConnPool> conn_pool_; ///
   bool grpc_rq_success_deferred_;
   Event::TimerPtr per_try_timeout_;
-  std::unique_ptr<GenericUpstream> upstream_;
+  std::unique_ptr<GenericUpstream> upstream_; /// see UpstreamRequest::onPoolReady()
   absl::optional<Http::StreamResetReason> deferred_reset_reason_;
   Buffer::InstancePtr buffered_request_body_;
   Upstream::HostDescriptionConstSharedPtr upstream_host_;

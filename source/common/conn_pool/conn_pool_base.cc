@@ -150,7 +150,7 @@ void ConnPoolImplBase::attachStreamToClient(Envoy::ConnectionPool::ActiveClient&
     host_->cluster().stats().upstream_rq_active_.inc();
     host_->cluster().resourceManager(priority_).requests().inc();
 
-    onPoolReady(client, context);
+     onPoolReady(client, context);
   }
 }
 
@@ -398,7 +398,7 @@ void ConnPoolImplBase::onConnectionEvent(ActiveClient& client, absl::string_view
     // At this point, for the mixed ALPN pool, the client may be deleted. Do not
     // refer to client after this point.
     onConnected(client);
-    onUpstreamReady();
+    onUpstreamReady(); ///
     checkForDrained();
   }
 }
@@ -500,7 +500,7 @@ ActiveClient::ActiveClient(ConnPoolImplBase& parent, uint32_t lifetime_stream_li
 ActiveClient::~ActiveClient() { releaseResources(); }
 
 void ActiveClient::onEvent(Network::ConnectionEvent event) {
-  parent_.onConnectionEvent(*this, "", event);
+  parent_.onConnectionEvent(*this, "", event); /// ConnPoolImplBase::onConnectionEvent
 }
 
 void ActiveClient::releaseResources() {

@@ -698,7 +698,7 @@ void ListenerManagerImpl::addListenerToWorker(Worker& worker,
     });
     return;
   }
-  worker.addListener(
+  worker.addListener( /// WorkerImpl::addListener()
       overridden_listener, listener, [this, &listener, completion_callback](bool success) -> void {
         // The add listener completion runs on the worker thread. Post back to the main thread to
         // avoid locking.
@@ -905,9 +905,9 @@ void ListenerManagerImpl::startWorkers(GuardDog& guard_dog, std::function<void()
                               stats_.workers_started_.set(1);
                               callback();
                             }
-                          });
+                          }); /// ListenerManagerImpl::addListenerToWorker()
     }
-    worker->start(guard_dog);
+    worker->start(guard_dog); /// WorkerImpl::start()
     if (enable_dispatcher_stats_) {
       worker->initializeStats(*scope_);
     }

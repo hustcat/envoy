@@ -159,7 +159,7 @@ void MainCommonBase::configureHotRestarter(Random::RandomGenerator& random_gener
 bool MainCommonBase::run() {
   switch (options_.mode()) {
   case Server::Mode::Serve:
-    server_->run();
+    server_->run(); /// InstanceImpl::run()
     return true;
   case Server::Mode::Validate: {
     auto local_address = Network::Utility::getLocalAddress(options_.localAddressIpVersion());

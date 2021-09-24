@@ -182,7 +182,7 @@ private:
     void updateListenerConfig(Network::ListenerConfig& config);
 
     ConnectionHandlerImpl& parent_;
-    Network::ListenerPtr listener_;
+    Network::ListenerPtr listener_; /// Envoy::Network::TcpListenerImpl
     const std::chrono::milliseconds listener_filters_timeout_;
     const bool continue_on_listener_filters_timeout_;
     std::list<ActiveTcpSocketPtr> sockets_;

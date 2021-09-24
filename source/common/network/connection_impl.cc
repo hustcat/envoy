@@ -90,7 +90,7 @@ ConnectionImpl::ConnectionImpl(Event::Dispatcher& dispatcher, ConnectionSocketPt
   // We never ask for both early close and read at the same time. If we are reading, we want to
   // consume all available data.
   socket_->ioHandle().initializeFileEvent(
-      dispatcher_, [this](uint32_t events) -> void { onFileEvent(events); }, trigger,
+      dispatcher_, [this](uint32_t events) -> void { onFileEvent(events); }, trigger, /// ConnectionImpl::onFileEvent()
       Event::FileReadyType::Read | Event::FileReadyType::Write);
 
   transport_socket_->setTransportSocketCallbacks(*this);
@@ -326,7 +326,7 @@ void ConnectionImpl::onRead(uint64_t read_buffer_size) {
     read_end_stream_raised_ = true;
   }
 
-  filter_manager_.onRead();
+  filter_manager_.onRead(); /// FilterManagerImpl::onRead()
 }
 
 void ConnectionImpl::enableHalfClose(bool enabled) {
@@ -781,7 +781,7 @@ ServerConnectionImpl::ServerConnectionImpl(Event::Dispatcher& dispatcher,
                                            TransportSocketPtr&& transport_socket,
                                            StreamInfo::StreamInfo& stream_info, bool connected)
     : ConnectionImpl(dispatcher, std::move(socket), std::move(transport_socket), stream_info,
-                     connected) {}
+                     connected) {} /// ConnectionImpl::ConnectionImpl()
 
 void ServerConnectionImpl::setTransportSocketConnectTimeout(std::chrono::milliseconds timeout) {
   if (!transport_connect_pending_) {

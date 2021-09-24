@@ -73,9 +73,9 @@ void FilterManagerImpl::onContinueReading(ActiveReadFilter* filter,
       }
     }
 
-    StreamBuffer read_buffer = buffer_source.getReadBuffer(); ///ConnectionManagerImpl::onData()
+    StreamBuffer read_buffer = buffer_source.getReadBuffer();
     if (read_buffer.buffer.length() > 0 || read_buffer.end_stream) {
-      FilterStatus status = (*entry)->filter_->onData(read_buffer.buffer, read_buffer.end_stream);
+      FilterStatus status = (*entry)->filter_->onData(read_buffer.buffer, read_buffer.end_stream); ///ConnectionManagerImpl::onData()
       if (status == FilterStatus::StopIteration || connection_.state() != Connection::State::Open) {
         return;
       }

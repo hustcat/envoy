@@ -335,7 +335,7 @@ private:
   std::unique_ptr<Ssl::ContextManager> ssl_context_manager_;
   ProdListenerComponentFactory listener_component_factory_;
   ProdWorkerFactory worker_factory_;
-  std::unique_ptr<ListenerManager> listener_manager_;
+  std::unique_ptr<ListenerManager> listener_manager_; /// listener
   absl::node_hash_map<Stage, LifecycleNotifierCallbacks> stage_callbacks_;
   absl::node_hash_map<Stage, LifecycleNotifierCompletionCallbacks> stage_completable_callbacks_;
   Configuration::MainImpl config_;
@@ -343,7 +343,7 @@ private:
   Event::TimerPtr stat_flush_timer_;
   DrainManagerPtr drain_manager_;
   AccessLog::AccessLogManagerImpl access_log_manager_;
-  std::unique_ptr<Upstream::ClusterManagerFactory> cluster_manager_factory_;
+  std::unique_ptr<Upstream::ClusterManagerFactory> cluster_manager_factory_; /// cluster
   std::unique_ptr<Server::GuardDog> main_thread_guard_dog_;
   std::unique_ptr<Server::GuardDog> worker_guard_dog_;
   bool terminated_;

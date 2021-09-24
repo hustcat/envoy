@@ -972,7 +972,7 @@ private:
   const uint64_t stream_id_;
   const bool proxy_100_continue_;
 
-  std::list<ActiveStreamDecoderFilterPtr> decoder_filters_;
+  std::list<ActiveStreamDecoderFilterPtr> decoder_filters_; ///
   std::list<ActiveStreamEncoderFilterPtr> encoder_filters_;
   std::list<AccessLog::InstanceSharedPtr> access_log_handlers_;
 
@@ -1055,7 +1055,7 @@ private:
   };
 
   State state_;
-};
+}; /// end class FilterManager
 
 } // namespace Http
 } // namespace Envoy

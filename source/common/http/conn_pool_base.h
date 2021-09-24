@@ -95,8 +95,8 @@ public:
                                             concurrent_stream_limit) {
     // The static cast makes sure we call the base class host() and not
     // HttpConnPoolImplBase::host which is of a different type.
-    Upstream::Host::CreateConnectionData data =
-        static_cast<Envoy::ConnectionPool::ConnPoolImplBase*>(&parent)->host()->createConnection(  /// createConnection()
+    Upstream::Host::CreateConnectionData data =/// Network::ClientConnectionImpl
+        static_cast<Envoy::ConnectionPool::ConnPoolImplBase*>(&parent)->host()->createConnection(  /// HostImpl::createConnection()
             parent.dispatcher(), parent.socketOptions(), parent.transportSocketOptions());
     initialize(data, parent);
   }
@@ -110,8 +110,8 @@ public:
 
   void initialize(Upstream::Host::CreateConnectionData& data, HttpConnPoolImplBase& parent) {
     real_host_description_ = data.host_description_;
-    codec_client_ = parent.createCodecClient(data);
-    codec_client_->addConnectionCallbacks(*this);
+    codec_client_ = parent.createCodecClient(data); /// FixedHttpConnPoolImpl::createCodecClient, return Http::CodecClientProd
+    codec_client_->addConnectionCallbacks(*this); /// CodecClient::addConnectionCallbacks
     codec_client_->setConnectionStats(
         {parent_.host()->cluster().stats().upstream_cx_rx_bytes_total_,
          parent_.host()->cluster().stats().upstream_cx_rx_bytes_buffered_,
@@ -130,7 +130,7 @@ public:
   uint64_t id() const override { return codec_client_->id(); }
   HttpConnPoolImplBase& parent() { return *static_cast<HttpConnPoolImplBase*>(&parent_); }
 
-  Http::CodecClientPtr codec_client_;
+  Http::CodecClientPtr codec_client_; /// CodecClientProd
 };
 
 /* An implementation of Envoy::ConnectionPool::ConnPoolImplBase for HTTP/1 and HTTP/2
@@ -154,7 +154,7 @@ public:
         codec_fn_(codec_fn), client_fn_(client_fn) {} /// ref to Envoy::Http::Http1::allocateConnPool()
 
   CodecClientPtr createCodecClient(Upstream::Host::CreateConnectionData& data) override {
-    return codec_fn_(data, this);
+    return codec_fn_(data, this); /// return Http::CodecClientProd
   }
 
   Envoy::ConnectionPool::ActiveClientPtr instantiateActiveClient() override {

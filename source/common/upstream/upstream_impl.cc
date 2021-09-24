@@ -339,13 +339,13 @@ HostImpl::createConnection(Event::Dispatcher& dispatcher, const ClusterInfo& clu
     connection_options = options;
   }
   ASSERT(!address->envoyInternalAddress());
-  Network::ClientConnectionPtr connection = dispatcher.createClientConnection(
+  Network::ClientConnectionPtr connection = dispatcher.createClientConnection( /// DispatcherImpl::createClientConnection()
       address, cluster.sourceAddress(),
       socket_factory.createTransportSocket(std::move(transport_socket_options)),
       connection_options);
   connection->setBufferLimits(cluster.perConnectionBufferLimitBytes());
   cluster.createNetworkFilterChain(*connection);
-  return connection;
+  return connection; /// Network::ClientConnectionImpl
 }
 
 void HostImpl::weight(uint32_t new_weight) { weight_ = std::max(1U, new_weight); }

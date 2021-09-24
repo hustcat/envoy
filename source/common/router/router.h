@@ -512,7 +512,7 @@ private:
   FilterUtility::TimeoutData timeout_;
   FilterUtility::HedgingParams hedging_params_;
   Http::Code timeout_response_code_ = Http::Code::GatewayTimeout;
-  std::list<UpstreamRequestPtr> upstream_requests_;
+  std::list<UpstreamRequestPtr> upstream_requests_; ////
   // Tracks which upstream request "wins" and will have the corresponding
   // response forwarded downstream
   UpstreamRequest* final_upstream_request_;

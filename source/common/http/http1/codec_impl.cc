@@ -444,7 +444,7 @@ http_parser_settings ConnectionImpl::settings_{
     },
     [](http_parser* parser) -> int {
       auto* conn_impl = static_cast<ConnectionImpl*>(parser->data);
-      auto statusor = conn_impl->onHeadersCompleteBase();
+      auto statusor = conn_impl->onHeadersCompleteBase(); /// ConnectionImpl::onHeadersCompleteBase()
       return conn_impl->setAndCheckCallbackStatusOr(std::move(statusor));
     },
     [](http_parser* parser, const char* at, size_t length) -> int {
@@ -806,7 +806,7 @@ void ConnectionImpl::dispatchBufferedBody() {
   ASSERT(HTTP_PARSER_ERRNO(&parser_) == HPE_OK || HTTP_PARSER_ERRNO(&parser_) == HPE_PAUSED);
   ASSERT(codec_status_.ok());
   if (buffered_body_.length() > 0) {
-    onBody(buffered_body_);
+    onBody(buffered_body_); /// ServerConnectionImpl::onBody
     buffered_body_.drain(buffered_body_.length());
   }
 }
@@ -1037,7 +1037,7 @@ void ServerConnectionImpl::onBody(Buffer::Instance& data) {
   ASSERT(!deferred_end_stream_headers_);
   if (active_request_.has_value()) {
     ENVOY_CONN_LOG(trace, "body size={}", connection_, data.length());
-    active_request_.value().request_decoder_->decodeData(data, false);
+    active_request_.value().request_decoder_->decodeData(data, false); /// Http::ConnectionManagerImpl::ActiveStream::decodeData
   }
 }
 

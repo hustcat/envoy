@@ -582,7 +582,7 @@ private:
   CdsApiPtr cds_api_;
   ClusterManagerStats cm_stats_;
   ClusterManagerInitHelper init_helper_;
-  Config::GrpcMuxSharedPtr ads_mux_;
+  Config::GrpcMuxSharedPtr ads_mux_; /// GrpcMuxImpl
   // Temporarily saved resume cds callback from updateClusterCounts invocation.
   Config::ScopedResume resume_cds_;
   LoadStatsReporterPtr load_stats_reporter_;

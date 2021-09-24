@@ -405,8 +405,8 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
                       route_entry_->clusterName());
     };
   }
-  Upstream::ThreadLocalCluster* cluster =
-      config_.cm_.getThreadLocalCluster(route_entry_->clusterName());
+  Upstream::ThreadLocalCluster* cluster =               ///ClusterEntry
+      config_.cm_.getThreadLocalCluster(route_entry_->clusterName()); /// ClusterManagerImpl::getThreadLocalCluster
   if (!cluster) {
     config_.stats_.no_cluster_.inc();
     ENVOY_STREAM_LOG(debug, "unknown cluster '{}'", *callbacks_, route_entry_->clusterName());
@@ -586,8 +586,8 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
 
   UpstreamRequestPtr upstream_request =
       std::make_unique<UpstreamRequest>(*this, std::move(generic_conn_pool)); /// UpstreamRequest::UpstreamRequest()
-  LinkedList::moveIntoList(std::move(upstream_request), upstream_requests_); /// UpstreamRequest::encodeHeaders()
-  upstream_requests_.front()->encodeHeaders(end_stream);
+  LinkedList::moveIntoList(std::move(upstream_request), upstream_requests_);
+  upstream_requests_.front()->encodeHeaders(end_stream); /// UpstreamRequest::encodeHeaders()
   if (end_stream) {
     onRequestComplete();
   }
@@ -669,7 +669,7 @@ Http::FilterDataStatus Filter::decodeData(Buffer::Instance& data, bool end_strea
     // potentially shadow.
     callbacks_->addDecodedData(data, true);
   } else {
-    upstream_requests_.front()->encodeData(data, end_stream);
+    upstream_requests_.front()->encodeData(data, end_stream); /// UpstreamRequest::encodeData()
   }
 
   if (end_stream) {

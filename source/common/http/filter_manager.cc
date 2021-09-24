@@ -614,7 +614,7 @@ void FilterManager::decodeData(ActiveStreamDecoderFilter* filter, Buffer::Instan
 
     state_.filter_call_state_ |= FilterCallState::DecodeData;
     (*entry)->end_stream_ = end_stream && !filter_manager_callbacks_.requestTrailers();
-    FilterDataStatus status = (*entry)->handle_->decodeData(data, (*entry)->end_stream_);
+    FilterDataStatus status = (*entry)->handle_->decodeData(data, (*entry)->end_stream_); /// Http::FilterDataStatus Filter::decodeData(Buffer::Instance& data, bool end_stream)
     if ((*entry)->end_stream_) {
       (*entry)->handle_->decodeComplete();
     }

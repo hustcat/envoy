@@ -220,7 +220,7 @@ void UpstreamRequest::encodeData(Buffer::Instance& data, bool end_stream) {
 
     ENVOY_STREAM_LOG(trace, "proxying {} bytes", *parent_.callbacks(), data.length());
     stream_info_.addBytesSent(data.length());
-    upstream_->encodeData(data, end_stream);
+    upstream_->encodeData(data, end_stream); /// GenericUpstream::encodeData
     if (end_stream) {
       upstream_timing_.onLastUpstreamTxByteSent(parent_.callbacks()->dispatcher().timeSource());
     }
@@ -352,7 +352,7 @@ void UpstreamRequest::onPoolReady(
   // This may be called under an existing ScopeTrackerScopeState but it will unwind correctly.
   ScopeTrackerScopeState scope(&parent_.callbacks()->scope(), parent_.callbacks()->dispatcher());
   ENVOY_STREAM_LOG(debug, "pool ready", *parent_.callbacks());
-  upstream_ = std::move(upstream);
+  upstream_ = std::move(upstream);//// Http::Http::HttpUpstream
 
   if (parent_.requestVcluster()) {
     // The cluster increases its upstream_rq_total_ counter right before firing this onPoolReady

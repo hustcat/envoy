@@ -27,7 +27,7 @@ public:
 protected:
   void setupServerSocket(Event::DispatcherImpl& dispatcher, Socket& socket);
 
-  TcpListenerCallbacks& cb_;
+  TcpListenerCallbacks& cb_; /// Envoy::Server::ConnectionHandlerImpl::ActiveTcpListener
   const uint32_t backlog_size_;
 
 private:

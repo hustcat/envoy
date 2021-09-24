@@ -323,7 +323,7 @@ ClusterManagerImpl::ClusterManagerImpl(
       ads_mux_ = std::make_shared<Config::NewGrpcMuxImpl>(
           Config::Utility::factoryForGrpcApiConfigSource(*async_client_manager_,
                                                          dyn_resources.ads_config(), stats, false)
-              ->create(),
+              ->create(), ///AsyncClientFactory::create()
           main_thread_dispatcher,
           *Protobuf::DescriptorPool::generated_pool()->FindMethodByName(
               Config::Utility::getAndCheckTransportVersion(dyn_resources.ads_config()) ==
@@ -410,7 +410,7 @@ ClusterManagerImpl::ClusterManagerImpl(
   // clusters have already initialized. (E.g., if all static).
   init_helper_.onStaticLoadComplete();
 
-  ads_mux_->start();
+  ads_mux_->start(); /// GrpcMuxImpl::start()
 }
 
 void ClusterManagerImpl::initializeSecondaryClusters(
@@ -1407,7 +1407,7 @@ ClusterManagerImpl::ThreadLocalClusterManagerImpl::ClusterEntry::connPool(
   // function. Otherwise, we'd need to capture a few of these variables by value.
   ConnPoolsContainer::ConnPools::PoolOptRef pool =
       container.pools_->getPool(priority, hash_key, [&]() {
-        return parent_.parent_.factory_.allocateConnPool(
+        return parent_.parent_.factory_.allocateConnPool( //// ProdClusterManagerFactory::allocateConnPool()
             parent_.thread_local_dispatcher_, host, priority, upstream_protocols,
             !upstream_options->empty() ? upstream_options : nullptr,
             have_transport_socket_options ? context->upstreamTransportSocketOptions() : nullptr,
@@ -1469,7 +1469,7 @@ ClusterManagerImpl::ThreadLocalClusterManagerImpl::ClusterEntry::tcpConnPool(
 
 ClusterManagerPtr ProdClusterManagerFactory::clusterManagerFromProto(
     const envoy::config::bootstrap::v3::Bootstrap& bootstrap) {
-  return ClusterManagerPtr{new ClusterManagerImpl(
+  return ClusterManagerPtr{new ClusterManagerImpl( /// ClusterManagerImpl::ClusterManagerImpl()
       bootstrap, *this, stats_, tls_, runtime_, local_info_, log_manager_, main_thread_dispatcher_,
       admin_, validation_context_, api_, http_context_, grpc_context_, router_context_)};
 }
@@ -1491,11 +1491,11 @@ Http::ConnectionPool::InstancePtr ProdClusterManagerFactory::allocateConnPool(
   if (protocols.size() == 1 && protocols[0] == Http::Protocol::Http2 &&
       runtime_.snapshot().featureEnabled("upstream.use_http2", 100)) {
     return Http::Http2::allocateConnPool(dispatcher, api_.randomGenerator(), host, priority,
-                                         options, transport_socket_options, state);
+                                         options, transport_socket_options, state); /// http2
   }
   ASSERT(protocols.size() == 1 && protocols[0] == Http::Protocol::Http11);
   return Http::Http1::allocateConnPool(dispatcher, api_.randomGenerator(), host, priority, options,
-                                       transport_socket_options, state);
+                                       transport_socket_options, state); /// http1 FixedHttpConnPoolImpl
 }
 
 Tcp::ConnectionPool::InstancePtr ProdClusterManagerFactory::allocateTcpConnPool(

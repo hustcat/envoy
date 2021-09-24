@@ -129,7 +129,7 @@ private:
     }
 
     FilterManagerImpl& parent_;
-    ReadFilterSharedPtr filter_;
+    ReadFilterSharedPtr filter_; /// ReadFilter
     bool initialized_{};
   };
 

@@ -39,7 +39,7 @@ CodecClient::CodecClient(Type type, Network::ClientConnectionPtr&& connection,
     connected_ = true;
   } else {
     ENVOY_CONN_LOG(debug, "connecting", *connection_);
-    connection_->connect();
+    connection_->connect(); /// Http1::ClientConnectionImpl::connect()
   }
 
   if (idle_timeout_) {

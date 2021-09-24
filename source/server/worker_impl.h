@@ -63,7 +63,7 @@ private:
   ThreadLocal::Instance& tls_;
   ListenerHooks& hooks_;
   Event::DispatcherPtr dispatcher_;
-  Network::ConnectionHandlerPtr handler_;
+  Network::ConnectionHandlerPtr handler_; /// ConnectionHandlerImpl
   Api::Api& api_;
   Thread::ThreadPtr thread_;
   WatchDogSharedPtr watch_dog_;

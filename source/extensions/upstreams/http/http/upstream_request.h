@@ -26,7 +26,7 @@ public:
                Upstream::LoadBalancerContext* ctx) {
     ASSERT(!is_connect);
     conn_pool_ =
-        thread_local_cluster.httpConnPool(route_entry.priority(), downstream_protocol, ctx);
+        thread_local_cluster.httpConnPool(route_entry.priority(), downstream_protocol, ctx); /// ClusterManagerImpl::ThreadLocalClusterManagerImpl::ClusterEntry::httpConnPool
   }
   ~HttpConnPool() override {
     ASSERT(conn_pool_stream_handle_ == nullptr, "conn_pool_stream_handle not null");

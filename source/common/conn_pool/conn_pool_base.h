@@ -71,7 +71,7 @@ public:
     DRAINING,   // No more streams can be dispatched to this connection, and it will be closed
     // when all streams complete.
     CLOSED // Connection is closed and object is queued for destruction.
-  };
+  }; /// end class ActiveClient
 
   ConnPoolImplBase& parent_;
   uint32_t remaining_streams_;
@@ -227,10 +227,10 @@ protected:
 
   Upstream::ClusterConnectivityState& state_;
 
-  const Upstream::HostConstSharedPtr host_;
-  const Upstream::ResourcePriority priority_;
+  const Upstream::HostConstSharedPtr host_; /// HostImpl
+  const Upstream::ResourcePriority priority_; ///
 
-  Event::Dispatcher& dispatcher_;
+  Event::Dispatcher& dispatcher_; ///
   const Network::ConnectionSocket::OptionsSharedPtr socket_options_;
   const Network::TransportSocketOptionsSharedPtr transport_socket_options_;
 

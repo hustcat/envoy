@@ -53,7 +53,7 @@ void ConnectionHandlerImpl::addListener(absl::optional<uint64_t> overridden_list
       }
       NOT_REACHED_GCOVR_EXCL_LINE;
     }
-    auto tcp_listener = std::make_unique<ActiveTcpListener>(*this, config);
+    auto tcp_listener = std::make_unique<ActiveTcpListener>(*this, config); /// ActiveTcpListener::ActiveTcpListener()
     details.typed_listener_ = *tcp_listener;
     details.listener_ = std::move(tcp_listener);
   } else {
@@ -194,7 +194,7 @@ ConnectionHandlerImpl::ActiveTcpListener::ActiveTcpListener(ConnectionHandlerImp
     : ActiveTcpListener(
           parent,
           parent.dispatcher_.createListener(config.listenSocketFactory().getListenSocket(), *this,
-                                            config.bindToPort(), config.tcpBacklogSize()),
+                                            config.bindToPort(), config.tcpBacklogSize()), /// TcpListenerImpl::TcpListenerImpl()
           config) {}
 
 ConnectionHandlerImpl::ActiveTcpListener::ActiveTcpListener(ConnectionHandlerImpl& parent,
@@ -389,7 +389,7 @@ void ConnectionHandlerImpl::ActiveTcpSocket::newConnection() {
     // Particularly the assigned events need to reset before assigning new events in the follow up.
     accept_filters_.clear();
     // Create a new connection on this listener.
-    listener_.newConnection(std::move(socket_), std::move(stream_info_));
+    listener_.newConnection(std::move(socket_), std::move(stream_info_)); /// ConnectionHandlerImpl::ActiveTcpListener::newConnection()
   }
 }
 
@@ -433,7 +433,7 @@ void ConnectionHandlerImpl::ActiveTcpListener::onAcceptWorker(
 
   // Create and run the filters
   config_->filterChainFactory().createListenerFilterChain(*active_socket);
-  active_socket->continueFilterChain(true);
+  active_socket->continueFilterChain(true); /// ActiveTcpSocket::continueFilterChain()
 
   // Move active_socket to the sockets_ list if filter iteration needs to continue later.
   // Otherwise we let active_socket be destructed when it goes out of scope.
@@ -478,7 +478,7 @@ void ConnectionHandlerImpl::ActiveTcpListener::newConnection(
   auto transport_socket = filter_chain->transportSocketFactory().createTransportSocket(nullptr);
   stream_info->setDownstreamSslConnection(transport_socket->ssl());
   auto& active_connections = getOrCreateActiveConnections(*filter_chain);
-  auto server_conn_ptr = parent_.dispatcher_.createServerConnection( /// create connection
+  auto server_conn_ptr = parent_.dispatcher_.createServerConnection( /// create connection, DispatcherImpl::createServerConnection()
       std::move(socket), std::move(transport_socket), *stream_info);
   if (const auto timeout = filter_chain->transportSocketConnectTimeout();
       timeout != std::chrono::milliseconds::zero()) {

@@ -230,7 +230,7 @@ void GrpcMuxImpl::onDiscoveryResponse(
       // Listener) even if the message does not have resources so that update_empty stat
       // is properly incremented and state-of-the-world semantics are maintained.
       if (watch->resources_.empty()) {
-        watch->callbacks_.onConfigUpdate(all_resource_refs, message->version_info());
+        watch->callbacks_.onConfigUpdate(all_resource_refs, message->version_info()); ///  Config::GrpcMuxSubscriptionImpl::onConfigUpdate()
         continue;
       }
       std::vector<DecodedResourceRef> found_resources;

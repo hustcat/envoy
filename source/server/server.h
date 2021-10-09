@@ -327,7 +327,7 @@ private:
   ThreadLocal::Instance& thread_local_;
   Random::RandomGeneratorPtr random_generator_;
   Api::ApiPtr api_;
-  Event::DispatcherPtr dispatcher_;
+  Event::DispatcherPtr dispatcher_; /// Event::DispatcherImpl
   std::unique_ptr<AdminImpl> admin_;
   Singleton::ManagerPtr singleton_manager_;
   Network::ConnectionHandlerPtr handler_;

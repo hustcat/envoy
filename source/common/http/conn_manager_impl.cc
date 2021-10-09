@@ -279,7 +279,7 @@ void ConnectionManagerImpl::handleCodecError(absl::string_view error) {
 
 void ConnectionManagerImpl::createCodec(Buffer::Instance& data) {
   ASSERT(!codec_);
-  codec_ = config_.createCodec(read_callbacks_->connection(), data, *this);
+  codec_ = config_.createCodec(read_callbacks_->connection(), data, *this); /// Envoy.Extensions.NetworkFilters.HttpConnectionManagerConfig.createCodec
 
   switch (codec_->protocol()) {
   case Protocol::Http3:

@@ -44,7 +44,7 @@ private:
   void disableInitFetchTimeoutTimer();
 
   GrpcMuxSharedPtr grpc_mux_;
-  SubscriptionCallbacks& callbacks_;
+  SubscriptionCallbacks& callbacks_; ///
   OpaqueResourceDecoder& resource_decoder_;
   SubscriptionStats stats_;
   const std::string type_url_;

@@ -57,7 +57,7 @@ public:
 
 private:
   TimeSource& time_source_;
-  envoy::config::route::v3::RouteConfiguration route_config_proto_;
+  envoy::config::route::v3::RouteConfiguration route_config_proto_; ////
   uint64_t last_config_hash_;
   uint64_t last_vhds_config_hash_;
   std::string last_config_version_;

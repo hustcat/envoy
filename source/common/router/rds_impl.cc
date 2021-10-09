@@ -123,7 +123,7 @@ void RdsRouteConfigSubscription::onConfigUpdate(
   }
   std::unique_ptr<Init::ManagerImpl> noop_init_manager;
   std::unique_ptr<Cleanup> resume_rds;
-  if (config_update_info_->onRdsUpdate(route_config, version_info)) {
+  if (config_update_info_->onRdsUpdate(route_config, version_info)) { /// RouteConfigUpdateReceiverImpl::onRdsUpdate
     stats_.config_reload_.inc();
     if (config_update_info_->routeConfiguration().has_vhds() &&
         config_update_info_->vhdsConfigurationChanged()) {
